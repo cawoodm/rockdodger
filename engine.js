@@ -72,7 +72,7 @@ Ticker.prototype.loop = function() {
     this.actualFPS = 1000/drawDiff;
     let updateDiff = now - this.lastUpdate||0;
 	// 2s passed without drawing -> halt game
-	//if (drawDiff>2000) return this.state="stop";
+	if (drawDiff>2000) g.Pause();//return this.state="stop";
 	this._updateCallBack(updateDiff/this._frameMillis);
 	this.lastUpdate = now;
 	// if enough time has elapsed, draw the next frame
@@ -93,7 +93,7 @@ function Sprite(options) {
     this.offY = options.offY || 0;
     this.scale = options.scale || 1;
     this.center = options.center || false;
-    this.img = ImageLoader.get[options.sprite];
+    this.img = g.ImageLoader.get[options.sprite||"sprites"];
     return this;
 }
 Sprite.prototype.renderer = function(ctx) {
@@ -127,8 +127,46 @@ function Keyboard(keyCode) {
 			key.isUp = true;
 			event.preventDefault();
 		}
-	};
+    };
+	key.clickHandler = function(event) {
+		key.press(event);
+	}
+    if (keyCode!=="click") {
+		window.addEventListener("keydown", key.downHandler.bind(key), false);
+		window.addEventListener("keyup", key.upHandler.bind(key), false);
+	} else {
+		document.addEventListener("touchstart", key.clickHandler.bind(key), false);
+	}
 	return key;
+}
+// Swiping
+document.addEventListener('touchstart', handleTouchStart, false);        
+document.addEventListener('touchend', handleTouchEnd, false);        
+document.addEventListener('touchmove', handleTouchMove, false);
+g.ui.xDown = null;                  
+g.ui.yDown = null;  
+function handleTouchStart(evt) {
+	g.ui.xDown = evt.touches[0].clientX;
+    g.ui.yDown = evt.touches[0].clientY;
+}
+function handleTouchEnd(evt) {
+	if(g.ui.xDown) g.ui.keys.fire.press();
+}
+function handleTouchMove(evt) {
+    if (!g.ui.xDown || !g.ui.yDown) return;
+    var xUp = evt.touches[0].clientX;                                    
+    var yUp = evt.touches[0].clientY;
+    var xDiff = g.ui.xDown - xUp;
+	var yDiff = g.ui.yDown - yUp;
+    if (Math.abs(xDiff) > Math.abs(yDiff)) {
+		if (xDiff > 0) g.ui.keys.left.down()
+		else g.ui.keys.right.down()
+    } else {
+		if (yDiff > 0) g.ui.keys.up.down()
+		else g.ui.keys.down.down()                                                              
+    }
+    g.ui.xDown = null;
+    g.ui.yDown = null;       
 }
 
 // Vector: Vector stuff
@@ -216,6 +254,7 @@ g.GameUpdate = function(delta) {
     if (typeof g.postGameUpdate=="function") g.postGameUpdate();
 };
 g.GameRender = function() {
+	g.ctx.clearRect(0, 0, g.ui.win.width, g.ui.win.height);
     if (typeof g.preGameRender=="function") g.preGameRender();
     g.ctx.save();
 	if (g.camera) g.ctx.translate(-g.camera.x, -g.camera.y)
@@ -233,14 +272,6 @@ g.GameRender = function() {
 
 // Wait for page to load, sprites to load and start game
 window.addEventListener("load", function() {
-	//g.ImageLoader.add("sprites", "./resources/sprites.png");
-	g.ImageLoader.onload(function() {
-		if (location.hostname=="localhost") {
-			if (location.search=="?title") return g.restart(true); // straight to game
-			//$('#debug').style.display='block';
-			g.restart(false); // straight to game
-			if (location.search=="?gameover") return g.gameOver();
-		}
-		else g.restart(true);
-	});
+    let start = g.init();
+	g.ImageLoader.onload(start);
 });
