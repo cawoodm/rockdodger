@@ -171,7 +171,7 @@ function handleTouchMove(evt) {
 
 // Vector: Vector stuff
 const Vector = {
-    norm: (vec)=>{let m = Vector.mag(vec);return {x: vec.x/m, y: vec.y/m}},
+    norm: (vec)=>{let m = Vector.mag(vec);return m==0?{x:0, y:0}:{x: vec.x/m, y: vec.y/m}},
     mag: (vec)=>{return Math.sqrt(Math.pow(vec.x, 2)+Math.pow(vec.y, 2))},
     subtract: (v1, v2)=>{return {x: v1.x-v2.x, y: v1.y-v2.y}},
     right: ()=>{return {x: 1, y: 0}},

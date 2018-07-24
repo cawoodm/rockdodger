@@ -2,13 +2,16 @@ function Collider(options) {
     options = options || {};
     this.checks = options.checks || [];
 };
-//Collider.prototype.update = function(delta) {
-Collider.prototype.renderer = function(delta) {
+Collider.prototype.update = function(delta) {
     if (g.state!="play") return;
     for (let i=0; i<this.checks.length; i++) {
         let coll = Collider.collides(this.checks[i].tag1, this.checks[i].tag2)
         if (coll.length>0) this.checks[i].callback(coll[0], coll[1]);
     }
+}
+Collider.prototype.renderer = function(delta) {
+    if (!Collider.debug) return;
+    this.update(1);
 }
 Collider.prototype.check = function(tag1, tag2, callback) {
     this.checks.push({tag1: tag1, tag2: tag2, callback: callback});

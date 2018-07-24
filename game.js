@@ -4,6 +4,7 @@ g.init = function() {
         return ()=>{g.restart(false)} // straight to game
         if (location.search=="?gameover") return g.gameOver;
     }
+    g.ui.win.width=g.ui.canvas.width=Math.min(g.ui.win.width, 800)
     //document.fonts.load('10pt "Amatica SC"').then(()=>{});
     return ()=>{g.restart(true)}
 }
@@ -31,7 +32,9 @@ g.ui.keys = {
 	,up: Keyboard(["KeyW", "ArrowUp"])
 	,down: Keyboard(["KeyS", "ArrowDown"])
 	,fire: Keyboard("Space") // space
+	,pause: Keyboard("KeyP") // P-Pause
 };
+g.ui.keys.pause.down = g.Pause;
 g.ui.keys.left.down = function() {
 	if (g.state!="play") return;
 	g.player.move(Vector.left())
@@ -50,7 +53,7 @@ g.ui.keys.down.down = function() {
 };
 g.ui.keys.fire.press = function(e) {
 	if (g.state=="message") return;
-	if (g.state!="play") return g.restart();
-	if (!e || !e.touches) g.player.shoot();
+    if (g.state!="play") return g.restart();
+    g.player.stop();
 }
 g.preGameRender = function() {}

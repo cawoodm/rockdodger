@@ -26,8 +26,10 @@ Rock.prototype.update = function(delta) {
     if (this.y>g.ui.floor) g.manager.rockMissed(this);
 }
 Rock.prototype.renderer = function(ctx) {
-    ctx.translate(this.x+this.w/2, this.y+this.h/2)
-    ctx.rotate(this.rot*Math.PI/180)
+    //ctx.translate(this.x+this.w/2, this.y+this.h/2)
+    //ctx.rotate(this.rot*Math.PI/180)
+    this.sprite.x=this.x;
+    this.sprite.y=this.y;
     this.sprite.renderer(ctx);
 }
 Rock.prototype.explode = function(o) {

@@ -32,6 +32,6 @@ Prize.prototype.renderer = function(ctx) {
     this.sprite.renderer(ctx);
 }
 Prize.prototype.explode = function(o) {
-    g.scene.add(new Explosion({x: this.x, y: this.y, size: 5, r: 255, g: 255, b: 0}))
+    g.scene.add(new Explosion({x: this.x, y: this.y, size: 5, r: 215, g: 215, b: 0}))
     g.scene.remove(this);
 }
