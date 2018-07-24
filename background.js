@@ -1,6 +1,5 @@
 Background = function(options) {
-
-    this.sprite = new Sprite({x: 0, y: 0, w: 277, h: 214, offX: 0, offY: 386});
+    this.sprite = new Sprite({x: 0, y: 0, w: 277, h: 214, offX: 0, offY: 387});
 }
 Background.prototype.update = function(delta) {
 }
