@@ -13,7 +13,7 @@ g.restart = function(title) {
     g.scene = new g.Scene();
     g.ui.floor = g.ui.win.height-100;
     g.scene.add(new Background());
-    if (title) {
+    if (false && title) {
         g.state="title";
 	} else {
         // Init the level(s)

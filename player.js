@@ -44,7 +44,7 @@ Player.prototype.renderer = function(ctx) {
 }
 Player.prototype.move = function(dir) {
     if (dir.y!=0) return; // Don't move up or down
-    if (Vector.norm(this.speed).x==-dir.x) return this.stop(); // Stop if arrow pressed twice in same direction
+    if (this.speed.x!=0) return this.stop(); // Stop if moving
     let ghost = {x: this.x, y: this.y, speed: {x: dir.x*this.velocity, y: dir.y*this.velocity}}
     let wouldCollide = this.x+this.w+ghost.speed.x>g.ui.win.width+this.w/2 || this.x+ghost.speed.x<-this.w/2;
     let isColliding = false;

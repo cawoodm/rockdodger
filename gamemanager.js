@@ -8,6 +8,7 @@ function GameManager() {
     this.healthBar = new Sprite({x: 200, y: 5, w: 145, h: 37, offX: 1, offY: 320});
 }
 GameManager.prototype.update = function(delta) {
+    if (g.state!="play") return;
     if (g.scene.count("rock")<this.level) {
         if (Math.round(rnd(0,4))>0)
             g.scene.add(new Rock({y: rnd(-100*this.level, 0), size:Math.round(rnd(0,this.level))}));
@@ -39,7 +40,7 @@ GameManager.prototype.playerHitsPrize = function(player, prize) {
     prize.explode()
     // Grow player
     if (player.w<100) player.y = g.ui.floor - 100 + 5*(10-this.health);
-    if (this.health<10) this.health++;
+    if (this.health<10) this.health++; else this.score+=10;
 }
 GameManager.prototype.rockMissed = function(rock) {
     this.score++;
