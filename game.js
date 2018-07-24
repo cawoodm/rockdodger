@@ -1,11 +1,11 @@
 g.init = function() {
+	g.ui.win.width=g.ui.canvas.width=Math.min(g.ui.win.width, 800)
+    document.fonts.load('10pt "Amatica SC"').then(()=>{});
     g.ImageLoader.add("sprites", "./resources/sprites.png");
     if (location.hostname=="localhost") {
         return ()=>{g.restart(false)} // straight to game
         if (location.search=="?gameover") return g.gameOver;
     }
-    g.ui.win.width=g.ui.canvas.width=Math.min(g.ui.win.width, 800)
-    //document.fonts.load('10pt "Amatica SC"').then(()=>{});
     return ()=>{g.restart(true)}
 }
 g.restart = function(title) {
