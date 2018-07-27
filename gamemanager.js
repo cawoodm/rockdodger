@@ -20,8 +20,10 @@ GameManager.prototype.update = function(delta) {
 }
 GameManager.prototype.renderer = function(ctx) {
     if (g.state == "title") return;
-    ctx.fillStyle="#DDC";
-	ctx.font="36px Amatic SC, bold";
+    ctx.fillStyle="rgba(3,3,3,0.5)";
+    ctx.fillRect(0, 0, g.ui.win.width, 50)
+    ctx.fillStyle="#FFF";
+	ctx.font="32px Amatic SC";
     ctx.fillText("Level: " + this.level + "  Score: " + this.score, 5, 36);
     ctx.fillStyle="#D00";
     ctx.fillRect(this.healthBar.x+41, this.healthBar.y+6, this.health*10, 27)

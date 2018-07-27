@@ -11,7 +11,7 @@ g.init = function() {
 g.restart = function(title) {
     g.Halt();
     g.scene = new g.Scene();
-    g.ui.floor = g.ui.win.height-100;
+    g.ui.floor = g.ui.win.height-50;
     g.scene.add(new Background());
     if (title) {
         g.state="title";
@@ -59,4 +59,12 @@ g.ui.keys.fire.press = function(e) {
     if (g.state!="play") return g.restart();
     g.player.stop();
 }
+g.followSwipe = function(evt) {
+    if (g.state!="play") return g.restart();
+    if (!evt.touches) return;
+    var x = evt.touches[0].clientX;
+    g.player.x=x-g.player.w/2;
+}
+document.addEventListener('touchstart', g.followSwipe, false); 
+document.addEventListener('touchmove', g.followSwipe, false);
 g.preGameRender = function() {}

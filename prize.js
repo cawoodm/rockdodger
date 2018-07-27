@@ -18,7 +18,7 @@ function Prize(options) {
 Prize.prototype.update = function(delta) {
     if (g.state!="play") return;
     this.speed+=this.acc;
-    this.rot+=0.8;
+    this.rot+=1;
     this.y+=this.speed*delta;
     if (this.y>g.ui.floor) {
         this.explode();
@@ -28,6 +28,7 @@ Prize.prototype.update = function(delta) {
 Prize.prototype.renderer = function(ctx) {
     ctx.translate(this.x+this.w/2, this.y+this.h/2)
     ctx.rotate(this.rot*Math.PI/180)
+    ctx.translate(-this.w/2, -this.h/2)
     //this.sprite.x=-this.w/2;this.sprite.h=-this.h/2;
     this.sprite.renderer(ctx);
 }

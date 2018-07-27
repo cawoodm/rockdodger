@@ -139,35 +139,7 @@ function Keyboard(keyCode) {
 	}
 	return key;
 }
-// Swiping
-document.addEventListener('touchstart', handleTouchStart, false);        
-document.addEventListener('touchend', handleTouchEnd, false);        
-document.addEventListener('touchmove', handleTouchMove, false);
-g.ui.xDown = null;                  
-g.ui.yDown = null;  
-function handleTouchStart(evt) {
-	g.ui.xDown = evt.touches[0].clientX;
-    g.ui.yDown = evt.touches[0].clientY;
-}
-function handleTouchEnd(evt) {
-	if(g.ui.xDown) g.ui.keys.fire.press();
-}
-function handleTouchMove(evt) {
-    if (!g.ui.xDown || !g.ui.yDown) return;
-    var xUp = evt.touches[0].clientX;                                    
-    var yUp = evt.touches[0].clientY;
-    var xDiff = g.ui.xDown - xUp;
-	var yDiff = g.ui.yDown - yUp;
-    if (Math.abs(xDiff) > Math.abs(yDiff)) {
-		if (xDiff > 0) g.ui.keys.left.down()
-		else g.ui.keys.right.down()
-    } else {
-		if (yDiff > 0) g.ui.keys.up.down()
-		else g.ui.keys.down.down()                                                              
-    }
-    g.ui.xDown = null;
-    g.ui.yDown = null;       
-}
+
 
 // Vector: Vector stuff
 const Vector = {
