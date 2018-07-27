@@ -5,7 +5,8 @@ function GameManager() {
     this.collider = g.scene.add(new Collider());
     this.collider.check("player", "rock", (e1,e2)=>{this.playerHitsRock(e1,e2)});
     this.collider.check("player", "prize", (e1,e2)=>{this.playerHitsPrize(e1,e2)});
-    this.healthBar = new Sprite({x: 200, y: 5, w: 145, h: 37, offX: 1, offY: 320});
+    this.healthBar = new Sprite({x: 170, y: 5, w: 145, h: 37, offX: 1, offY: 320});
+    this.healthBar.x = g.ui.win.width-this.healthBar.w-5;
 }
 GameManager.prototype.update = function(delta) {
     if (g.state!="play") return;
@@ -18,9 +19,10 @@ GameManager.prototype.update = function(delta) {
     this.level = 1 + Math.floor(this.score / 10);
 }
 GameManager.prototype.renderer = function(ctx) {
+    if (g.state == "title") return;
     ctx.fillStyle="#DDC";
 	ctx.font="36px Amatic SC, bold";
-    ctx.fillText("Level: " + this.level + "  Score: " + this.score, 20, 36);
+    ctx.fillText("Level: " + this.level + "  Score: " + this.score, 5, 36);
     ctx.fillStyle="#D00";
     ctx.fillRect(this.healthBar.x+41, this.healthBar.y+6, this.health*10, 27)
     this.healthBar.renderer(ctx);
@@ -33,7 +35,7 @@ GameManager.prototype.playerHitsRock = function(player, rock) {
     }
     if (this.health==0) {
         player.explode({size: 20});
-        g.state="gameover"; // TODO
+        g.gameOver();
     }
 }
 GameManager.prototype.playerHitsPrize = function(player, prize) {

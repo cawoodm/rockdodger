@@ -3,7 +3,7 @@ g.init = function() {
     document.fonts.load('10pt "Amatica SC"').then(()=>{});
     g.ImageLoader.add("sprites", "./resources/sprites.png");
     if (location.hostname=="localhost") {
-        return ()=>{g.restart(false)} // straight to game
+        if (location.search!="?title") return ()=>{g.restart(false)} // straight to game
         if (location.search=="?gameover") return g.gameOver;
     }
     return ()=>{g.restart(true)}
@@ -13,10 +13,10 @@ g.restart = function(title) {
     g.scene = new g.Scene();
     g.ui.floor = g.ui.win.height-100;
     g.scene.add(new Background());
-    if (false && title) {
+    if (title) {
         g.state="title";
+        g.scene.add(new GameTitle());
 	} else {
-        // Init the level(s)
         g.state="play";
         g.player = g.scene.add(new Player({x: g.ui.win.width/2, y: g.ui.floor-100, velocity: 10}));
         g.scene.add(new Floor());
@@ -25,7 +25,10 @@ g.restart = function(title) {
     g.manager = g.scene.add(new GameManager());
     g.Start();
 }
-/*global g*/
+g.gameOver = function() {
+    state="gameover";
+    g.scene.add(new GameOver());
+};
 g.ui.keys = {
 	left: Keyboard(["KeyA", "ArrowLeft"]) // left arrow
 	,right: Keyboard(["KeyD", "ArrowRight"]) // right arrow

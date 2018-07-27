@@ -19,7 +19,7 @@ Player.prototype.update = function(delta) {
     if (g.state!="play") return;
     this.speed.x += this.acc.x * delta;
     this.speed.y += this.acc.y * delta;
-    let wouldCollide = this.x+this.w+this.speed.x>g.ui.win.width+this.w/2 || this.x+this.speed.x<-this.w/2;
+    let wouldCollide = this.x+this.w+this.speed.x>g.ui.win.width || this.x+this.speed.x<0;
     this.x += this.speed.x;// * delta;
     //this.y += this.speed.y;//    * delta;
     if (wouldCollide) this.stop();
@@ -30,11 +30,6 @@ Player.prototype.update = function(delta) {
     else this.frame=0;
 }
 Player.prototype.renderer = function(ctx) {
-    // Drop shadow
-    ctx.beginPath();
-    ctx.fillStyle="rgba(100,100,100,0.5)"
-    ctx.ellipse(this.x+this.w/2, this.y+this.h, this.w/2.5, this.h/5, 0, 0, 2 * Math.PI);
-    ctx.fill();
     this.sprite.x=this.x;
     this.sprite.y=this.y;
     this.sprite.w=this.w;
@@ -46,7 +41,7 @@ Player.prototype.move = function(dir) {
     if (dir.y!=0) return; // Don't move up or down
     if (this.speed.x!=0) return this.stop(); // Stop if moving
     let ghost = {x: this.x, y: this.y, speed: {x: dir.x*this.velocity, y: dir.y*this.velocity}}
-    let wouldCollide = this.x+this.w+ghost.speed.x>g.ui.win.width+this.w/2 || this.x+ghost.speed.x<-this.w/2;
+    let wouldCollide = this.x+this.w+ghost.speed.x>g.ui.win.width || this.x+ghost.speed.x<0;
     let isColliding = false;
     let stationary = this.speed.x+this.speed.y==0;
     // Move up/down only if on X-grid (left/right)
