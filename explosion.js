@@ -27,6 +27,7 @@ var Explosion = function(options) {
       obj.x += obj.dx * delta;
       obj.y += obj.dy * delta;
     });
+    if (this.objs.length==0) g.scene.remove(this);
   };
   Explosion.prototype.renderer = function(ctx) {
     let that = this;

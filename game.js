@@ -1,5 +1,14 @@
 g.init = function() {
-	g.ui.win.width=g.ui.canvas.width=Math.min(g.ui.win.width, 800)
+    //g.ui.win.width=g.ui.canvas.width=Math.min(g.ui.win.width, 800)
+    g.ui.vWidth=2*278;
+    g.ui.vHeight=2*213;
+    // Scale up to full height
+    g.ui.scale={y: g.ui.win.height/g.ui.vHeight};
+    // Scale proportionally
+    g.ui.scale.x=g.ui.scale.y;
+    g.ui.vWidth=g.ui.win.width/g.ui.scale.x;
+    g.ctx.scale(g.ui.scale.x, g.ui.scale.y)
+    g.ui.floor = g.ui.vHeight-50;
     document.fonts.load('10pt "Amatica SC"').then(()=>{});
     g.ImageLoader.add("sprites", "./resources/sprites.png");
     if (location.hostname=="localhost") {
@@ -11,14 +20,13 @@ g.init = function() {
 g.restart = function(title) {
     g.Halt();
     g.scene = new g.Scene();
-    g.ui.floor = g.ui.win.height-80;
-    g.scene.add(new Background());
+    g.background = g.scene.add(new Background());
     if (title) {
         g.state="title";
         g.scene.add(new GameTitle());
 	} else {
         g.state="play";
-        g.player = g.scene.add(new Player({x: g.ui.win.width/2, y: g.ui.floor-100, velocity: 10}));
+        g.player = g.scene.add(new Player({}));
         g.scene.add(new Floor());
         g.scene.add(new Rock());
     }
@@ -63,7 +71,7 @@ g.followSwipe = function(evt) {
     if (g.state!="play") return g.restart();
     if (!evt.touches) return;
     var x = evt.touches[0].clientX;
-    g.player.x=x-g.player.w/2;
+    g.player.moveTo({x: (x/g.ui.scale.x)-g.player.w/2});
 }
 document.addEventListener('touchstart', g.followSwipe, false); 
 document.addEventListener('touchmove', g.followSwipe, false);

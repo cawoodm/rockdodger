@@ -6,11 +6,11 @@ function Prize(options) {
     this.rot = rnd(0, 180);
     switch (this.size) {
         default:
-            this.w=this.h=50;
+            this.w=this.h=34;
             this.sprite = new Sprite({w: this.w, h: this.h, offX: 1, offY: 269})
             break;
     }
-    this.x = rnd(0, g.ui.win.width-100);
+    this.x = rnd(0, g.ui.vWidth-this.w);
     this.y = options.y || 0;
     this.speed=0;
     this.acc=0.1;

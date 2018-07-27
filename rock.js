@@ -21,23 +21,43 @@ function Rock(options) {
             this.sprite = new Sprite({w: this.w, h: this.h, offX: 1, offY: 203})
             break;
     }
-    this.x = rnd(0, g.ui.win.width);
     this.y = options.y || 0;
-    this.speed=0;
+    this.finalX = rnd(0, g.ui.vWidth);
+    this.drawn=false;
+    this.speed=-9; //*g.ui.vHeight/800;
+    if (rnd(0,1)==0) {
+        // Main volcano
+        this.x=77*g.background.scale.x-this.w/2;
+        this.y=108*g.background.scale.y-this.h;
+        this.sprite.scale=0.3;
+    } else {
+        // Small volcano
+        this.x=210*g.background.scale.x-this.w/2;
+        this.y=139*g.background.scale.y-this.h;
+        this.sprite.scale=0.3;
+    }
     this.acc=0.1;
 }
 Rock.prototype.update = function(delta) {
     if (g.state!="play") return;
+    // Draw at least once before moving
+    if (!this.drawn) return;
+    if (this.sprite.scale<1) this.sprite.scale+=0.0012;
+    // Change direction (up to down)
+    if (this.speed<=0 && this.speed+this.acc>0) {
+        this.x = this.finalX;
+        this.sprite.scale=1
+    }
     this.speed+=this.acc;
     this.rot+=0.8;
     this.y+=this.speed*delta;
     if (this.y>g.ui.floor) g.manager.rockMissed(this);
 }
 Rock.prototype.renderer = function(ctx) {
-    ctx.translate(this.x+this.w/2, this.y+this.h/2)
-    ctx.rotate(this.rot*Math.PI/180)
-    ctx.translate(-this.w/2, -this.h/2)
-    //this.sprite.x=this.x;this.sprite.y=this.y;
+    this.drawn=true;
+    //ctx.translate(this.x+this.w/2, this.y+this.h/2);ctx.rotate(this.rot*Math.PI/180);ctx.translate(-this.w/2, -this.h/2)
+    this.sprite.x=this.x;
+    this.sprite.y=this.y;
     this.sprite.renderer(ctx);
 }
 Rock.prototype.explode = function(o) {

@@ -1,16 +1,16 @@
 function Player(options) {
     options = options || {};
-	this.x = options.x || 0;
-	this.y = options.y || 0;
+	this.x = options.x || g.ui.vWidth/2;
+	this.y = options.y || g.ui.floor-100;
 	this.w = options.w || 70;
     this.h = options.h || 100;
     this.y = g.ui.floor-this.h;
-    this.sprite = new Sprite({sprite: "sprites", w: this.w, h: this.h, offX: 1, offY: 1, scale: 1});
+    this.sprite = new Sprite({sprite: "sprites", w: this.w, h: this.h, offX: 1, offY: 1});
     this.collider=2;
     this.tag="player";
     this.acc={x:0, y:0};
     this.speed={x:0, y:0};
-    this.velocity = options.velocity || 5;
+    this.velocity = options.velocity || 10;
     this.frame=0;
     this.bulletSpeed=15;
     return this;
@@ -19,15 +19,11 @@ Player.prototype.update = function(delta) {
     if (g.state!="play") return;
     this.speed.x += this.acc.x * delta;
     this.speed.y += this.acc.y * delta;
-    let wouldCollide = this.x+this.w+this.speed.x>g.ui.win.width || this.x+this.speed.x<0;
+    let wouldCollide = this.x+this.w+this.speed.x>g.ui.vWidth || this.x+this.speed.x<0;
     this.x += this.speed.x;// * delta;
     //this.y += this.speed.y;//    * delta;
     if (wouldCollide) this.stop();
-    if (this.speed.x>0) this.frame=1; // Right
-    else if (this.speed.x<0) this.frame=2; // Left
-    else if (this.speed.y<0) this.frame=0; // Up
-    else if (this.speed.y>0) this.frame=3; // Down
-    else this.frame=0;
+    if (this.speed.x>0) this.frame=1; else if (this.speed.x<0) this.frame=0;
 }
 Player.prototype.renderer = function(ctx) {
     this.sprite.x=this.x;
@@ -37,15 +33,20 @@ Player.prototype.renderer = function(ctx) {
     this.sprite.offX=this.frame*(1+this.w)+1;
     this.sprite.renderer(ctx);
 }
+Player.prototype.moveTo = function(dir) {
+    if (this.x==dir.x) return;
+    if (dir.x+this.w>g.ui.vWidth || dir.x<0) return;
+    if (dir.x<this.x) this.frame=0; else this.frame=1;
+    this.x=dir.x;
+    this.speed.x=0;
+}
 Player.prototype.move = function(dir) {
     if (dir.y!=0) return; // Don't move up or down
     if (this.speed.x!=0) return this.stop(); // Stop if moving
     let ghost = {x: this.x, y: this.y, speed: {x: dir.x*this.velocity, y: dir.y*this.velocity}}
-    let wouldCollide = this.x+this.w+ghost.speed.x>g.ui.win.width || this.x+ghost.speed.x<0;
+    let wouldCollide = this.x+this.w+ghost.speed.x>g.ui.vWidth || this.x+ghost.speed.x<0;
     let isColliding = false;
     let stationary = this.speed.x+this.speed.y==0;
-    // Move up/down only if on X-grid (left/right)
-    //dp(isColliding, wouldCollide, stationary, this.x, this.x);
     if (isColliding && wouldCollide) {
         // Do nothing
     } else if (stationary && !wouldCollide) {

@@ -140,7 +140,6 @@ function Keyboard(keyCode) {
 	return key;
 }
 
-
 // Vector: Vector stuff
 const Vector = {
     norm: (vec)=>{let m = Vector.mag(vec);return m==0?{x:0, y:0}:{x: vec.x/m, y: vec.y/m}},
@@ -214,9 +213,6 @@ g.Step=function() {
 	g.GameUpdate(1);
 	g.GameRender();
 }
-g.Restart = function(title){
-    dp("No game defined in g.restart(). Start coding!")
-}
 
 g.GameUpdate = function(delta) {
     if (typeof g.preGameUpdate=="function") g.preGameUpdate();
@@ -241,6 +237,10 @@ g.GameRender = function() {
     if (typeof g.postGameRender=="function") g.postGameRender();
 	g.ctx.restore();
 };
+
+// Placeholders
+g.init = function(title){dp("No game defined in g.init(). Start coding!")}
+g.restart = function(title){dp("No game defined in g.restart(). Start coding!")}
 
 // Wait for page to load, sprites to load and start game
 window.addEventListener("load", function() {
