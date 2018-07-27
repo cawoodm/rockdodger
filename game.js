@@ -11,7 +11,7 @@ g.init = function() {
 g.restart = function(title) {
     g.Halt();
     g.scene = new g.Scene();
-    g.ui.floor = g.ui.win.height-50;
+    g.ui.floor = g.ui.win.height-80;
     g.scene.add(new Background());
     if (title) {
         g.state="title";

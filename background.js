@@ -6,6 +6,6 @@ Background.prototype.update = function(delta) {
 Background.prototype.renderer = function(ctx) {
     //ctx.fillStyle='#CDF';
     //ctx.fillRect(0, 0, g.ui.win.width, g.ui.win.height);
-    ctx.scale(g.ui.win.width/this.sprite.w, g.ui.win.height/this.sprite.h)
+    ctx.scale(g.ui.win.width/this.sprite.w, g.ui.win.height/(this.sprite.h*1.1))
     this.sprite.renderer(ctx)
 }
