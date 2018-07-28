@@ -63,7 +63,7 @@ g.ui.keys.down.down = function() {
 	g.player.move(Vector.down())
 };
 g.ui.keys.fire.press = function(e) {
-	if (g.state=="message") return;
+	if (g.state=="message" || g.state=="gameover") return;
     if (g.state!="play") return g.restart();
     g.player.stop();
 }

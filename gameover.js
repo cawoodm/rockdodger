@@ -6,7 +6,7 @@ GameOver.prototype.update = function(delta) {
     if (this.gameover.w*this.gameover.scale<g.ui.vWidth*0.97)
         this.gameover.scale +=0.015;
     else
-        g.state="gameOver";
+        window.setTimeout(()=>{g.state="gameOver"}, 1000);
 }
 GameOver.prototype.renderer = function(ctx) {
     g.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)'; g.ctx.fillRect(0, 0, g.ui.vWidth, g.ui.vHeight);
