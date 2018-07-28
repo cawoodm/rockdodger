@@ -213,7 +213,6 @@ g.Step=function() {
 	g.GameUpdate(1);
 	g.GameRender();
 }
-
 g.GameUpdate = function(delta) {
     if (typeof g.preGameUpdate=="function") g.preGameUpdate();
 	g.scene.entities.forEach(function(ent) {
@@ -223,18 +222,26 @@ g.GameUpdate = function(delta) {
 };
 g.GameRender = function() {
 	g.ctx.clearRect(0, 0, g.ui.win.width, g.ui.win.height);
-    if (typeof g.preGameRender=="function") g.preGameRender();
-    g.ctx.save();
+	g.ctx.save();
 	if (g.camera) g.ctx.translate(-g.camera.x, -g.camera.y)
+    if (typeof g.preGameRender=="function") {
+		g.ctx.save();
+		g.preGameRender();
+		g.ctx.restore();
+	}
 	g.scene.entities.forEach(function(ent) {
-		if (typeof ent.renderer === "function") {
+		if (typeof ent.renderer === "function" && ent.noRender != true) {
 			g.ctx.save();
 			if (ent.static && g.camera) g.ctx.translate(g.camera.x, g.camera.y)
 			ent.renderer(g.ctx);
 			g.ctx.restore();
 		}
     }, this);
-    if (typeof g.postGameRender=="function") g.postGameRender();
+    if (typeof g.postGameRender=="function") {
+		g.ctx.save();
+		g.postGameRender();
+		g.ctx.restore();
+	}
 	g.ctx.restore();
 };
 

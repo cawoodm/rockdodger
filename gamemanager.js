@@ -2,6 +2,7 @@ function GameManager() {
     this.score = 0;
     this.level = 1;
     this.health = 10;
+    this.noRender = true;
     this.collider = g.scene.add(new Collider());
     this.collider.check("player", "rock", (e1,e2)=>{this.playerHitsRock(e1,e2)});
     this.collider.check("player", "prize", (e1,e2)=>{this.playerHitsPrize(e1,e2)});
@@ -31,6 +32,7 @@ GameManager.prototype.renderer = function(ctx) {
 }
 GameManager.prototype.playerHitsRock = function(player, rock) {
     rock.explode({r:255})
+    player.owCount=20;
     if (this.health > 0) {
         this.health--;
         player.y = g.ui.floor - 100 + 5*(10-this.health); // Shrink player

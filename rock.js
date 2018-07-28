@@ -22,19 +22,19 @@ function Rock(options) {
             break;
     }
     this.y = options.y || 0;
-    this.finalX = rnd(0, g.ui.vWidth);
     this.drawn=false;
-    this.speed=-9; //*g.ui.vHeight/800;
+    this.speed=-9;
+    this.sprite.scale=0.3;
     if (rnd(0,1)==0) {
         // Main volcano
         this.x=77*g.background.scale.x-this.w/2;
         this.y=108*g.background.scale.y-this.h;
-        this.sprite.scale=0.3;
+        this.finalX = rnd(0, g.ui.vWidth/2);
     } else {
         // Small volcano
         this.x=210*g.background.scale.x-this.w/2;
         this.y=139*g.background.scale.y-this.h;
-        this.sprite.scale=0.3;
+        this.finalX = rnd(g.ui.vWidth/2, g.ui.vWidth);
     }
     this.acc=0.1;
 }

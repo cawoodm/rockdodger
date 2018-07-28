@@ -12,7 +12,7 @@ function Player(options) {
     this.speed={x:0, y:0};
     this.velocity = options.velocity || 10;
     this.frame=0;
-    this.bulletSpeed=15;
+    this.owCount=0;
     return this;
 }
 Player.prototype.update = function(delta) {
@@ -23,7 +23,8 @@ Player.prototype.update = function(delta) {
     this.x += this.speed.x;// * delta;
     //this.y += this.speed.y;//    * delta;
     if (wouldCollide) this.stop();
-    if (this.speed.x>0) this.frame=1; else if (this.speed.x<0) this.frame=0;
+    if (this.owCount>0) {this.owCount--; this.frame=2}
+    else if (this.speed.x>0) this.frame=1; else if (this.speed.x<0 || this.frame==2) this.frame=0;
 }
 Player.prototype.renderer = function(ctx) {
     this.sprite.x=this.x;

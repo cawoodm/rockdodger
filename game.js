@@ -76,3 +76,9 @@ g.followSwipe = function(evt) {
 document.addEventListener('touchstart', g.followSwipe, false); 
 document.addEventListener('touchmove', g.followSwipe, false);
 g.preGameRender = function() {}
+g.postGameRender = function() {
+    g.ctx.save();
+    // Always render UI on top
+	g.manager.renderer(g.ctx);
+    g.ctx.restore();
+}
