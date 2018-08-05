@@ -34,7 +34,7 @@ g.restart = function(title) {
     g.Start();
 }
 g.gameOver = function() {
-    state="gameover";
+    g.state="gameover";
     g.scene.add(new GameOver());
 };
 g.ui.keys = {

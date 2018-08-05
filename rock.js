@@ -9,13 +9,13 @@ function Rock(options) {
             this.sprite = new Sprite({w: this.w, h: this.h, offX: 92, offY: 203})
             break;
         case 2:
-                this.w=this.h=33;
-                this.sprite = new Sprite({w: this.w, h: this.h, offX: 58, offY: 203})
-                break;
+            this.w=this.h=33;
+            this.sprite = new Sprite({w: this.w, h: this.h, offX: 58, offY: 203})
+            break;
         case 1:
-                this.w=this.h=30;
-                this.sprite = new Sprite({w: this.w, h: this.h, offX: 26, offY: 203})
-                break;
+            this.w=this.h=30;
+            this.sprite = new Sprite({w: this.w, h: this.h, offX: 26, offY: 203})
+            break;
         default:
             this.w=this.h=24;
             this.sprite = new Sprite({w: this.w, h: this.h, offX: 1, offY: 203})
