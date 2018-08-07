@@ -31,6 +31,7 @@ GameManager.prototype.renderer = function(ctx) {
     this.healthBar.renderer(ctx);
 }
 GameManager.prototype.playerHitsRock = function(player, rock) {
+    if (g.state!="play") return;
     rock.explode({r:255})
     player.owCount=20;
     if (this.health > 0) {
@@ -43,6 +44,7 @@ GameManager.prototype.playerHitsRock = function(player, rock) {
     }
 }
 GameManager.prototype.playerHitsPrize = function(player, prize) {
+    if (g.state!="play") return;
     prize.explode()
     // Grow player
     if (player.w<100) player.y = g.ui.floor - 100 + 5*(10-this.health);
