@@ -214,21 +214,21 @@ g.Step=function() {
 	g.GameRender();
 }
 g.GameUpdate = function(delta) {
-    if (typeof g.preGameUpdate=="function") g.preGameUpdate();
+    if (typeof g.preGameUpdate=="function") g.preGameUpdate(delta);
 	g.scene.entities.forEach(function(ent) {
 		if (typeof ent.update === "function") ent.update(delta);
 	}, this);
     if (typeof g.postGameUpdate=="function") g.postGameUpdate();
 };
 g.GameRender = function() {
-	g.ctx.clearRect(0, 0, g.ui.win.width, g.ui.win.height);
+	g.ctx.clearRect(0, 0, g.ui.win.width/g.ui.scaleX, g.ui.win.height/g.ui.scaleY);
 	g.ctx.save();
-	if (g.camera) g.ctx.translate(-g.camera.x, -g.camera.y)
     if (typeof g.preGameRender=="function") {
 		g.ctx.save();
-		g.preGameRender();
+		g.preGameRender(g.ctx);
 		g.ctx.restore();
 	}
+	if (g.camera) g.ctx.translate(-g.camera.x, -g.camera.y)
 	g.scene.entities.forEach(function(ent) {
 		if (typeof ent.renderer === "function" && ent.noRender != true) {
 			g.ctx.save();
@@ -239,7 +239,7 @@ g.GameRender = function() {
     }, this);
     if (typeof g.postGameRender=="function") {
 		g.ctx.save();
-		g.postGameRender();
+		g.postGameRender(g.ctx);
 		g.ctx.restore();
 	}
 	g.ctx.restore();
